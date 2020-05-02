@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GAME TIME</title>
+  
+  <style>    
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+    
+    body {
+        background-color: black;
+        color: white;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.2;
+        color: #ffffff;
+    }
+    
+    /* Problem */
+    #Problem {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #Problem li {
+        display: inline-block;
+    }
+    #Problem li span {
+    	
+        display: block;
+        font-size: 48px;
+        text-align: center;
+        vertical-align: top;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+	#time {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 60%; left: 30%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      text-align: center;
+    }
+
+    #option {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(0, -50%);
+      display: inline-block;
+    }
+
+    #option li {
+    	display: block;
+        font-size: 30px;
+        text-align: left;
+        vertical-align: top;
+        margin: 10px;
+        padding: 10px;        
+    }
+
+    #msg {
+    	font-size: 30px;
+    	font-weight: bold;
+    	position: absolute;
+    	transform: translate(-50%, -50%);
+    	left: 30%;
+    }
+
+    #status {
+    	position: absolute;
+    	display: inline-block;
+    	margin: 0px;
+    	left: 0px;
+    	top: 2%;
+    	padding: 5px;
+    	font-size:20px;
+    	width: 100%;
+    	background-color: white;
+    	color:black;
+
+    }
+
+    #status li {
+    	display: inline-block;
+    	padding-left: 40px;
+    }
+    
+    input {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+    }
+    
+    #error {
+      position: absolute;
+      top: 58%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 15px;
+      color: white;
+    }
+  </style>
+</head>
+
+
+<body>
+	<ul id="status">
+		<li>Vocabulary:<span id="vocab">0</span></li>
+		<li>Points:<span id="pts">0</span></li>
+		<li>Correct:<span id="pct">0/0</span></li>
+        <li>Code runs on google script</li>
+	</ul>
+    <form>
+		<input type="text" id="url" placeholder="Google Sheet URL" autofocus>
+	</form>
+    <div id="error"></div>
+    <ul id="Problem"><li><span></span></li></ul>
+    <p id="time"></p>
+    <ul id="option">
+    	<li><span id="opt1"></span></li>
+    	<li><span id="opt2"></span></li>
+    	<li><span id="opt3"></span></li>
+    	<li><span id="opt4"></span></li>
+    </ul>
+    <span id="msg"></span>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+    	
+    	
+
+  		var vocab=[];
+    	var sec_allow = 10;
+    	var key_ind;
+    	var opt_ind=[];
+    	var pts = 0;
+    	var prob_attempted = -1;
+    	var prob_correct = 0;
+		
+
+    	//change background 
+    	function change_scene() {
+    		$("#Problem").css("top", "40%").css("left", "30%");
+    		$("#option li").css("border", "2px solid white")
+    		$("#pts").text(pts);
+    		$("#pct").text(prob_correct+"/"+prob_attempted)
+
+    		var cr = Math.floor(Math.random()*200);
+    		var cg = Math.floor(Math.random()*150);
+    		var cb = Math.floor(Math.random()*150);
+            $("body").css("background-color","rgb("+cr+","+cg+","+cb+")");
+            
+            cr = Math.floor((cr+255)/2);
+            cg = Math.floor((cg+255)/2);
+            cb = Math.floor((cb+255)/2);
+            $("#status").css("background-color","rgb("+cr+","+cg+","+cb+")");
+            
+            cr = Math.floor(cr/3);
+            cg = Math.floor(cg/3);
+            cb = Math.floor(cb/3);
+            $("#option li").css("background-color", "rgb("+cr+","+cg+","+cb+")");
+            $("#status").css("color","rgb("+cr+","+cg+","+cb+")");
+	    	
+        };
+
+        //change problem
+		function new_problem(){
+    		
+    		prob_attempted++;
+    		//change background color
+    		change_scene();
+    		
+    		//find key_ind and display english 
+    		key_ind = Math.floor(Math.random()*vocab.length);    		
+    		$("#Problem li span").text(vocab[key_ind].eng);
+            
+			//find other opt_ind and display chinese
+			opt_ind = [key_ind];
+			for (var i = 1; i < 4; i++){
+				var newopt_ind = Math.floor(Math.random()*vocab.length);
+				var same_ind = 0;
+				for (var j = 0; j < opt_ind.length; j++){
+					same_ind += (newopt_ind === opt_ind[j]);
+				}
+				if (same_ind === 0){opt_ind.push(newopt_ind);} else {i--;}
+			}
+			opt_ind.sort(function(a,b){return 0.5-Math.random();})
+			$("#opt1").text("(A) "+vocab[opt_ind[0]].chi);
+			$("#opt2").text("(B) "+vocab[opt_ind[1]].chi);
+			$("#opt3").text("(C) "+vocab[opt_ind[2]].chi);
+			$("#opt4").text("(D) "+vocab[opt_ind[3]].chi);
+
+
+			console.log("answer is: "+key_ind);
+			console.log("options are: "+opt_ind);
+
+    		//time
+            tbase = new Date();
+    		time = setInterval(function(){
+	        	seconds = -Math.floor((new Date()-tbase-sec_allow*1000)/1000);
+	        	if (seconds >=0){$("#time").text(seconds);} 
+	        	else {
+		        		$("#msg").text("-1").css("top","20%").animate({top: '-30%'},'slow');
+		        		pts--;
+		        		new_problem();
+		        	}
+        	}, 100);
+
+    	};
+
+
+    	function correct(){
+    		console.log("correct");
+    		$("#msg").text("+1").css("top","20%").animate({top: '-30%'},'slow');
+    		prob_correct++;
+    		pts++;
+    	}
+    	function incorrect(){
+    		console.log("incorrect");
+    		$("#msg").text("-2").css("top","20%").animate({top: '-30%'},'slow');
+    		pts-=2;
+    	}
+
+
+
+
+        //set_up
+        $("form").on("submit",function(){
+        	event.preventDefault();
+    		var url = $("input").val();
+            if (url === "0"){
+                 console.log("Use hardcoded URL");
+                 url = "https://docs.google.com/spreadsheets/d/1Gqtyo051yZa1K3ErssYo_P6jYytHFGNeq7y2srdl7sY/edit#gid=448107418"
+                 ;}
+    		
+            function onSuccess(json) {
+            console.log("load successfull");
+                $("#error").css("display","none");
+                $("form").css("display","none");
+                $("#Problem li span").text('Loading...');
+                vocab = json;
+                $("#vocab").text(vocab.length);
+                $("#Problem li span")
+                    .text('Click to Start')
+                    .one("click", new_problem);
+                }
+                
+            function onFailure(error) {
+            console.log("load failed");
+            $("#error").text("Invalid URL. Please try again.");
+            }
+            
+            google.script.run.withSuccessHandler(onSuccess).read_value(url);
+            google.script.run.withFailureHandler(onFailure).read_value(url);
+        });
+    		
+
+
+    	//on-click
+    	$("#opt1").on("click",function(){
+    		if (key_ind === opt_ind[0]){correct();} else {incorrect();}
+    		new_problem();
+    	})
+    	$("#opt2").on("click",function(){
+    		if (key_ind === opt_ind[1]){correct();} else {incorrect();}
+    		new_problem();
+    	})
+    	$("#opt3").on("click",function(){
+    		if (key_ind === opt_ind[2]){correct();} else {incorrect();}
+    		new_problem();
+    	})
+    	$("#opt4").on("click",function(){
+    		if (key_ind === opt_ind[3]){correct();} else {incorrect();}
+    		new_problem();
+    	})
+
+    	
+
+    </script>
+  
+</body>
+</html>

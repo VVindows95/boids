@@ -1,6 +1,6 @@
 // Size of canvas. These get updated to fill the whole browser.
-let width = 150;
-let height = 150;
+let width = 800;
+let height = 400;
 
 const numBoids = 100;
 const visualRange = 75;
@@ -8,6 +8,7 @@ const visualRange = 75;
 var boids = [];
 
 function initBoids() {
+  console.log("Initializing");
   for (var i = 0; i < numBoids; i += 1) {
     boids[boids.length] = {
       x: Math.random() * width,
@@ -205,10 +206,13 @@ function animationLoop() {
   window.requestAnimationFrame(animationLoop);
 }
 
+// document.getElementById("reset").onclick = function() {initBoids()};
+
+
 window.onload = () => {
   // Make sure the canvas always fills the whole window
-  window.addEventListener("resize", sizeCanvas, false);
-  sizeCanvas();
+  // window.addEventListener("resize", sizeCanvas, false);
+  // sizeCanvas();
 
   // Randomly distribute the boids to start
   initBoids();
@@ -216,3 +220,16 @@ window.onload = () => {
   // Schedule the main animation loop
   window.requestAnimationFrame(animationLoop);
 };
+
+// Intearaction with the html
+
+
+$("#reset1").on("click",function(){
+  console.log("reset1 Clicked");
+  initBoids();
+})
+
+document.getElementById("reset2").onclick = function(){
+  console.log("reset2 Clicked");
+  initBoids();
+}
