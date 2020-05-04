@@ -2,11 +2,33 @@
 let width = 800;
 let height = 400;
 
+// TODO: Display key parameters on the html numboids visual range
+const visualRange = 75; // i.e.visual ragnge
+const centeringFactor = 0.005; // adjust velocity by this %   i.e. coherence from function flyTowardsCenter(bot)
+const avoidFactor = 0.05; // Adjust velocity by this %        i.e. separation from function avoidOthers()
+const matchingFactor = 0.05; // Adjust by this %              i.e. aligment from matchVelocity()
+// Key parameter ends
+
 const numBoids = 100;
-const visualRange = 75;
+const margin = 200; // from keepWithinBounds(boid)
+const turnFactor = 1; // from keepWithinBounds(boid)
+const speedLimit = 15; // from limitSpeed()
+const minDistance = 20; // The distance to stay away from other boids from avoidOthers()
 
 var boids = [];
 
+// Called initially and whenever the window resizes to update the canvas
+// size and width/height variables.
+// I delete the original code which call this becase this will make it full screen
+function sizeCanvas() {
+  const canvas = document.getElementById("boids");
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+}
+
+// Initialization step. FUTURE TODO: make sure that the old bots are cleared as well
 function initBoids() {
   console.log("Initializing");
   for (var i = 0; i < numBoids; i += 1) {
@@ -20,6 +42,7 @@ function initBoids() {
   }
 }
 
+// Measuring distance from bot to bot 
 function distance(boid1, boid2) {
   return Math.sqrt(
     (boid1.x - boid2.x) * (boid1.x - boid2.x) +
@@ -27,7 +50,7 @@ function distance(boid1, boid2) {
   );
 }
 
-// TODO: This is naive and inefficient.
+// Finding closest bots 
 function nClosestBoids(boid, n) {
   // Make a copy
   const sorted = boids.slice();
@@ -37,40 +60,13 @@ function nClosestBoids(boid, n) {
   return sorted.slice(1, n + 1);
 }
 
-// Called initially and whenever the window resizes to update the canvas
-// size and width/height variables.
-function sizeCanvas() {
-  const canvas = document.getElementById("boids");
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-}
+////////////////////////////////////////////////////////////////////////////////
+// RULES
+////////////////////////////////////////////////////////////////////////////////
 
-// Constrain a boid to within the window. If it gets too close to an edge,
-// nudge it back in and reverse its direction.
-function keepWithinBounds(boid) {
-  const margin = 200;
-  const turnFactor = 1;
-
-  if (boid.x < margin) {
-    boid.dx += turnFactor;
-  }
-  if (boid.x > width - margin) {
-    boid.dx -= turnFactor
-  }
-  if (boid.y < margin) {
-    boid.dy += turnFactor;
-  }
-  if (boid.y > height - margin) {
-    boid.dy -= turnFactor;
-  }
-}
-
-// Find the center of mass of the other boids and adjust velocity slightly to
+// Rule 1: Find the center of mass of the other boids and adjust velocity slightly to
 // point towards the center of mass.
 function flyTowardsCenter(boid) {
-  const centeringFactor = 0.005; // adjust velocity by this %
 
   let centerX = 0;
   let centerY = 0;
@@ -93,10 +89,8 @@ function flyTowardsCenter(boid) {
   }
 }
 
-// Move away from other boids that are too close to avoid colliding
+// Rule 2: Move away from other boids that are too close to avoid colliding
 function avoidOthers(boid) {
-  const minDistance = 20; // The distance to stay away from other boids
-  const avoidFactor = 0.05; // Adjust velocity by this %
   let moveX = 0;
   let moveY = 0;
   for (let otherBoid of boids) {
@@ -112,11 +106,9 @@ function avoidOthers(boid) {
   boid.dy += moveY * avoidFactor;
 }
 
-// Find the average velocity (speed and direction) of the other boids and
+// Rule 3: Find the average velocity (speed and direction) of the other boids and
 // adjust velocity slightly to match.
 function matchVelocity(boid) {
-  const matchingFactor = 0.05; // Adjust by this % of average velocity
-
   let avgDX = 0;
   let avgDY = 0;
   let numNeighbors = 0;
@@ -138,10 +130,27 @@ function matchVelocity(boid) {
   }
 }
 
-// Speed will naturally vary in flocking behavior, but real animals can't go
+// Rule 4* Constrain a boid to within the window. If it gets too close to an edge,
+// nudge it back in and reverse its direction.
+function keepWithinBounds(boid) {
+
+  if (boid.x < margin) {
+    boid.dx += turnFactor;
+  }
+  if (boid.x > width - margin) {
+    boid.dx -= turnFactor
+  }
+  if (boid.y < margin) {
+    boid.dy += turnFactor;
+  }
+  if (boid.y > height - margin) {
+    boid.dy -= turnFactor;
+  }
+}
+
+// Rule 5* Speed will naturally vary in flocking behavior, but real animals can't go
 // arbitrarily fast.
 function limitSpeed(boid) {
-  const speedLimit = 15;
 
   const speed = Math.sqrt(boid.dx * boid.dx + boid.dy * boid.dy);
   if (speed > speedLimit) {
@@ -150,8 +159,12 @@ function limitSpeed(boid) {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// End of Rules
+////////////////////////////////////////////////////////////////////////////////
 const DRAW_TRAIL = false;
 
+// Drawing to canvas
 function drawBoid(ctx, boid) {
   const angle = Math.atan2(boid.dy, boid.dx);
   ctx.translate(boid.x, boid.y);
@@ -177,7 +190,7 @@ function drawBoid(ctx, boid) {
   }
 }
 
-// Main animation loop
+// **Main animation loop
 function animationLoop() {
   // Update each boid
   for (let boid of boids) {
@@ -206,9 +219,7 @@ function animationLoop() {
   window.requestAnimationFrame(animationLoop);
 }
 
-// document.getElementById("reset").onclick = function() {initBoids()};
-
-
+// **Once the window is loaded, this main function is called
 window.onload = () => {
   // Make sure the canvas always fills the whole window
   // window.addEventListener("resize", sizeCanvas, false);
@@ -223,12 +234,13 @@ window.onload = () => {
 
 // Intearaction with the html
 
-
+// jquery style
 $("#reset1").on("click",function(){
   console.log("reset1 Clicked");
   initBoids();
 })
 
+// old style
 document.getElementById("reset2").onclick = function(){
   console.log("reset2 Clicked");
   initBoids();

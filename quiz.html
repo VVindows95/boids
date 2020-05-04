@@ -132,6 +132,7 @@
     </ul>
     <span id="msg"></span>
     
+    <!-- ends here ctrl + "/"  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
     	
@@ -257,7 +258,7 @@
             console.log("load failed");
             $("#error").text("Invalid URL. Please try again.");
             }
-            
+            console.log("Something is wrong!!!");
             google.script.run.withSuccessHandler(onSuccess).read_value(url);
             google.script.run.withFailureHandler(onFailure).read_value(url);
         });
