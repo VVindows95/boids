@@ -1,4 +1,4 @@
-// Size of canvas. These get updated to fill the whole browser.
+import { slidercontainer.value } from './index.html' //attempt to import the variable slidercontainer.value from the html file
 let width = 800;
 let height = 400;
 
@@ -9,7 +9,7 @@ const avoidFactor = 0.05; // Adjust velocity by this %        i.e. separation fr
 const matchingFactor = 0.05; // Adjust by this %              i.e. aligment from matchVelocity()
 // Key parameter ends
 
-const numBoids = 100;
+var numBoids = slidecontainer.value; //slidecontainer.value is the value the slider outputs as used in index.html
 const margin = 200; // from keepWithinBounds(boid)
 const turnFactor = 1; // from keepWithinBounds(boid)
 const speedLimit = 15; // from limitSpeed()
