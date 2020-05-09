@@ -1,4 +1,3 @@
-// Size of canvas. These get updated to fill the whole browser.
 let width = 800;
 let height = 400;
 
@@ -9,10 +8,10 @@ const avoidFactor = 0.05; // Adjust velocity by this %        i.e. separation fr
 const matchingFactor = 0.05; // Adjust by this %              i.e. aligment from matchVelocity()
 // Key parameter ends
 
-const numBoids = 100;
-const margin = 200; // from keepWithinBounds(boid)
-const turnFactor = 1; // from keepWithinBounds(boid)
-const speedLimit = 15; // from limitSpeed()
+var numBoids = 70; // I would like to hopefully make this into a variable controlled by the slider!
+const margin = 200;
+const turnFactor = 1; 
+const speedLimit = 15; 
 const minDistance = 20; // The distance to stay away from other boids from avoidOthers()
 
 var boids = [];
