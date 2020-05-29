@@ -48,32 +48,39 @@
 	   	width: 15%;
 	   }
 	   /*slider code*/
+
+		#boid1 {
+            text-align: center;
+          }
+
 	</style>
 </head>
 
 <body>
-	<div>Let's do this simulation!!!!!!!</div>
-	
+	<center><strong><h2 style="font-family:verdana;font-size:xx-large;color:#FFFFFF;">Boids Artificial Life Simulation</strong></h2></center><br><br>
+	<div id='boid1'>
 	<canvas id="boids" location = "centered" width="800" height="400" style="border:5px solid #000000;">></canvas>
-	
+</div>
+	<center>
 	<div>
-		<button id="reset2" onclick="initBoids()" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset All
+		<button id="reset2" onclick="initBoids(),clear()" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset All
 		</button>
 		<!-- https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_onclick_dom -->
 	</div>
-
+<br><br>
 	<div>
-	<button id="reset1" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset</button>
+	<button id="reset1" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset option 1</button>
 	</div>
-
-</div>
+<br><br>
 	<div>Number of Birds</div>
 	<div class="slidecontainer">
 		<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
 		<p>Value: <span id="demo"></span></p>
 	</div>
+	</center>
 	<!-- https://www.w3schools.com/howto/howto_js_rangeslider.asp -->
 	<script> //This uses the 'value' as defined above and displays it beneath the slider. This updates as the slider is moved.
+
 	var slidecontainer = document.getElementById("myRange"); 
 	var output = document.getElementById("demo"); 
 	output.innerHTML = slidecontainer.value; 
@@ -81,10 +88,23 @@
 	slidecontainer.oninput = function() 
 	{ 
   		output.innerHTML = this.value; 
-  		console.log("Number of Birds changed to : " + this.value);
-	} 	
+	}
+
 	</script>
 
+	<div class="_1jez2de" style="width: 625px; height: 37.5px; font-size: 7.8125px;">
+		<div class="_1ijovtk">
+			<div>&nbsp;</div>
+			<button class="_34ixo9" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset
+
+		<div class="_1ijovtk">
+			<div>&nbsp;</div>
+			<div class="_8ru12p">
+				<label class="_1rlbp2i">
+					<input class="_hqrnew" type="checkbox">Trace paths
+				</label>
+			</div>
+		</div>
 	<script src="./boids.js"></script> 
 
 
