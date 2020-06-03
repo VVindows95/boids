@@ -1,18 +1,19 @@
+// Size of canvas. These get updated to fill the whole browser.
 let width = 800;
 let height = 400;
 
 // TODO: Display key parameters on the html numboids visual range
-const visualRange = 75; // i.e.visual ragnge
-const centeringFactor = 0.005; // adjust velocity by this %   i.e. coherence from function flyTowardsCenter(bot)
-const avoidFactor = 0.05; // Adjust velocity by this %        i.e. separation from function avoidOthers()
-const matchingFactor = 0.05; // Adjust by this %              i.e. aligment from matchVelocity()
+visualRange = 75; // i.e.visual ragnge
+centeringFactor = 0.005; // adjust velocity by this %   i.e. coherence from function flyTowardsCenter(bot)
+avoidFactor = 0.05; // Adjust velocity by this %        i.e. separation from function avoidOthers()
+matchingFactor = 0.05; // Adjust by this %              i.e. aligment from matchVelocity()
 // Key parameter ends
 
-var numBoids = 70; // I would like to hopefully make this into a variable controlled by the slider!
-const margin = 200;
-const turnFactor = 1; 
-const speedLimit = 15; 
-const minDistance = 20; // The distance to stay away from other boids from avoidOthers()
+numBoids = 1;
+margin = 200; // from keepWithinBounds(boid)
+turnFactor = 1; // from keepWithinBounds(boid)
+speedLimit = 15; // from limitSpeed()
+minDistance = 20; // The distance to stay away from other boids from avoidOthers()
 
 var boids = [];
 
@@ -29,9 +30,10 @@ function sizeCanvas() {
 
 // Initialization step. FUTURE TODO: make sure that the old bots are cleared as well
 function initBoids() {
-  console.log("Initializing");
+  console.log("Initializing", numBoids);
+  boids = [];
   for (var i = 0; i < numBoids; i += 1) {
-    boids[boids.length] = {
+    boids[i] = {
       x: Math.random() * width,
       y: Math.random() * height,
       dx: Math.random() * 10 - 5,
@@ -233,14 +235,43 @@ window.onload = () => {
 
 // Intearaction with the html
 
-// jquery style
-$("#reset1").on("click",function(){
-  console.log("reset1 Clicked");
-  initBoids();
-})
-
 // old style
-document.getElementById("reset2").onclick = function(){
-  console.log("reset2 Clicked");
+document.getElementById("reset").onclick = function(){
+  console.log("reset Clicked");
   initBoids();
+}
+
+// for slider
+document.getElementById("slider1").oninput = function() {
+  document.getElementById("demo1").innerHTML = this.value+"%";
+  avoidFactor = this.value / 100;
+  console.log("value of the slider change to ", avoidFactor);
+}
+
+document.getElementById("slider2").oninput = function() {
+  document.getElementById("demo2").innerHTML = this.value;
+  numBoids = this.value;
+  initBoids();
+  console.log("# of boids changed to  ", numBoids);
+}
+
+document.getElementById("slider3").oninput = function() {
+  document.getElementById("demo3").innerHTML = this.value;
+  visualRange = this.value;
+  initBoids();
+  console.log("Visual Range changed to  ", visualRange);
+}
+
+document.getElementById("slider4").oninput = function() {
+  document.getElementById("demo4").innerHTML = this.value;
+  centeringFactor = this.value / 1000;
+  initBoids();
+  console.log("Centering Factor changed to  ", centeringFactor);
+}
+
+document.getElementById("slider5").oninput = function() {
+  document.getElementById("demo5").innerHTML = this.value;
+  matchingFactor = this.value / 100;
+  initBoids();
+  console.log("Speed Matching Factor changed to  ", matchingFactor);
 }
