@@ -245,7 +245,7 @@ document.getElementById("reset").onclick = function(){
 document.getElementById("slider1").oninput = function() {
   document.getElementById("demo1").innerHTML = this.value+"%";
   avoidFactor = this.value / 100;
-  console.log("value of the slider change to ", avoidFactor);
+  console.log("Avoidance Factor changed to ", avoidFactor);
 }
 
 document.getElementById("slider2").oninput = function() {
