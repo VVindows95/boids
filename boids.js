@@ -1,5 +1,5 @@
 // Size of canvas. These get updated to fill the whole browser.
-let width = 800;
+var width = 800;
 let height = 400;
 
 // TODO: Display key parameters on the html numboids visual range
@@ -274,4 +274,16 @@ document.getElementById("slider5").oninput = function() {
   matchingFactor = this.value / 100;
   initBoids();
   console.log("Speed Matching Factor changed to  ", matchingFactor);
+}
+
+
+
+document.getElementById("slider6").oninput = function() {
+  document.getElementById("demo6").innerHTML = this.value;
+  document.getElementById("boids").innerWidth = this.value;
+  width = this.value;
+  //const ctx = document.getElementById("boids").getContext("2d");
+  ctx.clearRect(0, 0, width, height);
+  initBoids();
+  console.log("Window width changed to  ", width);
 }

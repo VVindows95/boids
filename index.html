@@ -7,68 +7,113 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 		<style type="text/css"> 
-			body { margin: 0;
-				background: #282c34; overflow: hidden; } 
+			body {
+				background: #282c34; 
+				} 
 				div { color: white; }
 
-		#boids {
-			text-align: center;
+		canvas {
+			padding-left: 0;
+			padding-right: 0;
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
 		}
 
 		#animation{
-			text-align: center;
+			display: inline;
 		}
+
+		.slidecontainer{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo1{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo2{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo3{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo4{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo5{
+			display: inline-block;
+			margin: 0;
+		}
+
+		#demo6{
+			display: inline-block;
+			margin: 0;
+		}
+
+
 	</style>
 </head>
 
 <body>
 	<center><strong><h2 style="font-family:verdana;font-size:xx-large;color:#FFFFFF;">Boids Artificial Life Simulation</strong></h2></center><br><br>
 	<div id= 'animation'>
-	<canvas id="boids" location = "centered" width="800" height="400" style="border:5px solid #000000;">></canvas>
-	<center>
+	<canvas id="boids" width="1400" height="400">></canvas>
 	</div>
-	<div>
+
 		<center>
 		<button id="reset" style="border: 1px solid rgb(193, 60, 61); color: rgb(193, 60, 61);">Reset
 		</button>
 	</center>
 		<!-- https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_onclick_dom -->
+		<b>
+		<center>
+		<div class="slidecontainer">
+			<p>Window Width</p>
+		<input type="range" min="1" max="1400" value="800" id="slider6">
+	</div><div id ="demo6">800</div>
 
-	</div>
-	<div class="slidecontainer">
+			<div class="slidecontainer">
+			<p>Number of Agents</p>
+		<input type="range" min="1" max="100" value="1" id="slider2">
+			</div><div id ="demo2">1</div>
+
+		<div class="slidecontainer">
 		<p>Avoidance Factor</p>
 		<input type="range" min="1" max="100" value="50" id="slider1">
 	</div>
 	<div id ="demo1">50</div>
 
-		<div class="slidecontainer">
-			<p>Number of Agents</p>
-		<input type="range" min="1" max="100" value="50" id="slider2">
-			<p id ="demo2">50</p>
-	</div>
-
-
-		<div class="slidecontainer">
+	<div class="slidecontainer">
 			<p>Visual Range</p>
 		<input type="range" min="1" max="100" value="50" id="slider3">
 	</div>
 	<div id ="demo3">50</div>
-	</div>
 
-		<div class="slidecontainer">
+	<div class="slidecontainer">
 		<p>Centering Factor</p>
 		<input type="range" min="1" max="100" value="50" id="slider4">
 	</div>
 	<div id ="demo4">50</div>
-	</div>
 
-		<div class="slidecontainer">
+	<div class="slidecontainer">
 			<p>Speed Matching Factor</p>
 		<input type="range" min="1" max="100" value="50" id="slider5">
 	</div>
 	<div id ="demo5">50</div>
-	</div>
-</center>
+	</center>
+</b>
+
+<br><br><center><strong><p3 style="font-family:verdana;font-size:large;color:red;">When adjusting Window Width, please set number of Boids to 1 and slowly decrease width.</strong></p3></center><br><br>
+
 <center>
 	<script src="./boids.js"></script> 
 </center>
